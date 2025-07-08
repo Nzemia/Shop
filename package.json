@@ -1,0 +1,20 @@
+{
+    "name": "jengashop",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "dev": "turbo run dev",
+        "build": "turbo run build",
+        "start": "turbo run start",
+        "lint": "turbo run lint",
+        "clean": "turbo run clean"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "packageManager": "pnpm@10.12.2",
+    "devDependencies": {
+        "turbo": "^2.5.4"
+    }
+}
