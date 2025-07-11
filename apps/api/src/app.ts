@@ -6,7 +6,7 @@ import userRoutes from "./users/routes/users.routes";
 import adminRoutes from "./admin/routes/admin.routes";
 import productRoutes from "./products/routes/products.routes";
 import orderRoutes from "./orders/routes/orders.routes";
-
+import paymentRoutes from "./payments/routes/payments.routes";
 
 dotenv.config();
 
@@ -19,5 +19,6 @@ app.use("/api/users", userRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/payments", paymentRoutes);
 
 export default app;
