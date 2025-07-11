@@ -5,6 +5,7 @@ import ProductsPage from "../../pages/products/ProductsPage";
 import OrdersPage from "../../pages/orders/OrdersPage";
 import UsersPage from "../../pages/users/UsersPage";
 import AdminsPage from "../../pages/admins/AdminsPage";
+import ProfilePage from "../../pages/profile/ProfilePage";
 
 export default function DashboardLayout() {
   return (
@@ -20,6 +21,7 @@ export default function DashboardLayout() {
             <Route path="orders" element={<OrdersPage />} />
             <Route path="users" element={<UsersPage />} />
             <Route path="admins" element={<AdminsPage />} />
+            <Route path="profile" element={<ProfilePage />} />
           </Routes>
 
           <Outlet />
