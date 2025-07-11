@@ -3,7 +3,9 @@ import {
   createOrder,
   getAllOrders,
   getOrderById,
-  updateOrderStatus
+  updateOrderStatus,
+  cancelOrder,
+  requestRefund
 } from "../../orders/controllers/orders.controller";
 
 import {
@@ -13,7 +15,8 @@ import {
 import validate from "../../auth/middleware/auth.middleware";
 import {
   orderSchema,
-  orderStatusSchema
+  orderStatusSchema,
+  refundSchema
 } from "../../orders/validators/orders.validator";
 
 const router = Router();
@@ -22,6 +25,9 @@ router.use(requireAuth);
 router.get("/", requireRole("ADMIN", "SUPERADMIN"), getAllOrders);
 router.get("/:id", requireRole("ADMIN", "SUPERADMIN"), getOrderById);
 router.post("/", validate(orderSchema), createOrder);
+router.post("/:id/cancel", cancelOrder);
+router.post("/:id/request-refund", validate(refundSchema), requestRefund);
+
 router.patch(
   "/:id/status",
   requireRole("ADMIN", "SUPERADMIN"),

@@ -40,3 +40,24 @@ export const updateOrderStatus = async (
   );
   res.status(200).json(updated);
 };
+
+
+export const cancelOrder = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const order = await OrderService.cancelOrder(req.params.id, req.user!.id);
+  res.status(200).json({ message: "Order canceled", order });
+};
+
+export const requestRefund = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const order = await OrderService.requestRefund(
+    req.params.id,
+    req.user!.id,
+    req.body.reason
+  );
+  res.status(200).json({ message: "Refund requested", order });
+};

@@ -24,3 +24,8 @@ export const orderStatusSchema = z.object({
   status: z.enum(["PENDING", "PAID", "CANCELED"]),
   trackingStatus: z.enum(["PENDING", "CONFIRMED", "SHIPPED", "DELIVERED"])
 });
+
+
+export const refundSchema = z.object({
+  reason: z.string().min(10, "Reason must be at least 10 characters")
+});
