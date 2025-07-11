@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Pencil, Plus, Trash } from "lucide-react";
+import { Loader2, Pencil, Plus, Trash } from "lucide-react";
 import { useProducts } from "./useProducts";
 import ProductForm from "./ProductForm";
 
@@ -24,7 +24,9 @@ export default function ProductsPage() {
       </div>
 
       {loading ? (
-        <p>Loading...</p>
+        <div className="flex items-center justify-center py-10">
+          <Loader2 className="animate-spin w-6 h-6 text-muted-foreground" />
+        </div>
       ) : (
         <div className="overflow-auto">
           <table className="w-full text-sm">

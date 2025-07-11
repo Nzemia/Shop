@@ -2,6 +2,7 @@ import { Outlet, Route, Routes } from "react-router-dom";
 import Sidebar from "../nav/Sidebar";
 import Header from "../nav/Header";
 import ProductsPage from "../../pages/products/ProductsPage";
+import OrdersPage from "../../pages/orders/OrdersPage";
 
 
 export default function DashboardLayout() {
@@ -15,6 +16,7 @@ export default function DashboardLayout() {
           <Routes>
             <Route path="" element={<div>Welcome to Jenga Admin</div>} />
             <Route path="products" element={<ProductsPage />} />
+            <Route path="orders" element={<OrdersPage />} />
           </Routes>
 
           <Outlet />
