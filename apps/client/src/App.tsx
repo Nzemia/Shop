@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import HomePage from "./components/HomePage";
+import ShopPage from "./pages/ShopPage";
 
 export default function App() {
   return (
@@ -10,7 +11,7 @@ export default function App() {
       <main className="min-h-[80vh]">
         <Routes>
           <Route path="/" element={<HomePage />} />
-          {/* We’ll add /shop, /product/:id, /cart etc next */}
+          <Route path="/shop" element={<ShopPage />} />
         </Routes>
       </main>
       <Footer />
