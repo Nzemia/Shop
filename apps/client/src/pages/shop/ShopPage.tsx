@@ -1,5 +1,5 @@
-import { useProducts } from "../hooks/useProducts";
-import ProductCard from "../components/ProductCard";
+import { useProducts } from "../../hooks/useProducts";
+import ProductCard from "../../components/ProductCard";
 
 export default function ShopPage() {
   const { products, loading } = useProducts();
