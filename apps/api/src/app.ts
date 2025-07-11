@@ -5,6 +5,8 @@ import authRoutes from "./auth/routes/auth.routes";
 import userRoutes from "./users/routes/users.routes";
 import adminRoutes from "./admin/routes/admin.routes";
 import productRoutes from "./products/routes/products.routes";
+import orderRoutes from "./orders/routes/orders.routes";
+
 
 dotenv.config();
 
@@ -16,5 +18,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/products", productRoutes);
+app.use("/api/orders", orderRoutes);
 
 export default app;
