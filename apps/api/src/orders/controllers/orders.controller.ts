@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import * as OrderService from "../services/orders.service";
+import prisma from "../../shared/config/database.config";
 
 export const createOrder = async (
   req: Request,
@@ -7,6 +8,34 @@ export const createOrder = async (
 ): Promise<void> => {
   const order = await OrderService.createOrder(req.body, req.user!.id);
   res.status(201).json(order);
+};
+
+export const getMyOrders = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const userId = req.user?.id;
+
+  if (!userId) {
+    res.status(401).json({ message: "Unauthorized" });
+    return;
+  }
+
+  const orders = await prisma.order.findMany({
+    where: { userId },
+    include: {
+      orderItems: {
+        include: {
+          product: true
+        }
+      }
+    },
+    orderBy: {
+      createdAt: "desc"
+    }
+  });
+
+  res.json(orders);
 };
 
 export const getAllOrders = async (
@@ -40,7 +69,6 @@ export const updateOrderStatus = async (
   );
   res.status(200).json(updated);
 };
-
 
 export const cancelOrder = async (
   req: Request,

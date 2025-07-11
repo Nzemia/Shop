@@ -3,6 +3,7 @@ import {
   createOrder,
   getAllOrders,
   getOrderById,
+  getMyOrders,
   updateOrderStatus,
   cancelOrder,
   requestRefund
@@ -25,6 +26,7 @@ router.use(requireAuth);
 router.get("/", requireRole("ADMIN", "SUPERADMIN"), getAllOrders);
 router.get("/:id", requireRole("ADMIN", "SUPERADMIN"), getOrderById);
 router.post("/", validate(orderSchema), createOrder);
+router.post("/my", requireRole("USER"), getMyOrders);
 router.post("/:id/cancel", cancelOrder);
 router.post("/:id/request-refund", validate(refundSchema), requestRefund);
 
@@ -34,5 +36,6 @@ router.patch(
   validate(orderStatusSchema),
   updateOrderStatus
 );
+
 
 export default router;
