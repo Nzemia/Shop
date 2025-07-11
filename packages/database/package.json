@@ -10,6 +10,7 @@
         "seed": "tsx src/seed.ts",
         "studio": "prisma studio",
         "reset": "prisma migrate reset",
+        "postinstall": "prisma generate",
         "format": "prisma format",
         "build": "tsc",
         "dev": "tsc --watch"
@@ -24,7 +25,7 @@
         "prisma": "^6.11.1"
     },
     "devDependencies": {
-        "@types/node": "^24.0.10",
+        "@types/node": "^24.0.12",
         "typescript": "^5.8.3"
     }
 }

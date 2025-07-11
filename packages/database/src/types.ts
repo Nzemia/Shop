@@ -1,67 +1,30 @@
-export * from "@prisma/client"
-
-export interface UserWithoutPassword {
-    id: string
-    email: string
-    username: string
-    role: Role
-    createdAt: Date
-    updatedAt: Date
+export enum Role {
+    USER = "USER",
+    ADMIN = "ADMIN",
+    SUPERADMIN = "SUPERADMIN"
 }
 
-export interface OrderWithItems {
-    id: string
-    orderNumber: string
-    userId: string
-    totalAmount: number
-    status: OrderStatus
-    trackingStatus: TrackingStatus
-    paymentMethod: PaymentMethod
-    paymentStatus: PaymentStatus
-    phoneNumber: string | null
-    shippingAddress: any
-    mpesaTransactionId: string | null
-    createdAt: Date
-    updatedAt: Date
-    user: UserWithoutPassword
-    orderItems: OrderItemWithProduct[]
+export enum OrderStatus {
+    PENDING = "PENDING",
+    PAID = "PAID",
+    CANCELED = "CANCELED"
 }
 
-export interface OrderItemWithProduct {
-    id: string
-    orderId: string
-    productId: string
-    quantity: number
-    price: number
-    product: Product
+export enum TrackingStatus {
+    PENDING = "PENDING",
+    CONFIRMED = "CONFIRMED",
+    SHIPPED = "SHIPPED",
+    DELIVERED = "DELIVERED"
 }
 
-export interface DashboardStats {
-    totalUsers: number
-    totalProducts: number
-    totalOrders: number
-    totalRevenue: number
-    recentOrders: OrderWithItems[]
-    topProducts: ProductWithStats[]
+export enum PaymentMethod {
+    MPESA = "MPESA",
+    DOOR_DELIVERY = "DOOR_DELIVERY"
 }
 
-export interface ProductWithStats {
-    id: string
-    name: string
-    price: number
-    totalSold: number
-    revenue: number
+export enum PaymentStatus {
+    PENDING = "PENDING",
+    COMPLETED = "COMPLETED",
+    FAILED = "FAILED",
+    REFUNDED = "REFUNDED"
 }
-
-import type {
-    User,
-    Product,
-    Order,
-    OrderItem,
-    SupportMessage,
-    Role,
-    OrderStatus,
-    TrackingStatus,
-    PaymentMethod,
-    PaymentStatus
-} from "@prisma/client"
