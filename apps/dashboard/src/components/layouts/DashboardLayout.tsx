@@ -4,7 +4,7 @@ import Header from "../nav/Header";
 import ProductsPage from "../../pages/products/ProductsPage";
 import OrdersPage from "../../pages/orders/OrdersPage";
 import UsersPage from "../../pages/users/UsersPage";
-
+import AdminsPage from "../../pages/admins/AdminsPage";
 
 export default function DashboardLayout() {
   return (
@@ -19,6 +19,7 @@ export default function DashboardLayout() {
             <Route path="products" element={<ProductsPage />} />
             <Route path="orders" element={<OrdersPage />} />
             <Route path="users" element={<UsersPage />} />
+            <Route path="admins" element={<AdminsPage />} />
           </Routes>
 
           <Outlet />
