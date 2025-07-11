@@ -1,0 +1,11 @@
+.input {
+  @apply border rounded-md px-3 py-2 bg-background text-foreground w-full;
+}
+
+.btn-primary {
+  @apply bg-primary text-white px-4 py-2 rounded-md;
+}
+
+.btn-muted {
+  @apply bg-muted text-foreground px-4 py-2 rounded-md;
+}

@@ -1,6 +1,7 @@
 import { Outlet, Route, Routes } from "react-router-dom";
 import Sidebar from "../nav/Sidebar";
 import Header from "../nav/Header";
+import ProductsPage from "../../pages/products/ProductsPage";
 
 
 export default function DashboardLayout() {
@@ -13,7 +14,7 @@ export default function DashboardLayout() {
         <main className="flex-1 overflow-y-auto p-4">
           <Routes>
             <Route path="" element={<div>Welcome to Jenga Admin</div>} />
-            {/* We'll add /products, /orders, /users here soon */}
+            <Route path="products" element={<ProductsPage />} />
           </Routes>
 
           <Outlet />
