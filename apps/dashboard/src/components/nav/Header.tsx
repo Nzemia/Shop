@@ -1,9 +1,11 @@
 import ThemeToggle from "../ui/ThemeToggle";
-import { Menu } from "lucide-react";
+import { Menu, UserCircle } from "lucide-react";
 import { useSidebarStore } from "../../store/useSidebarStore";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
   const { toggle } = useSidebarStore();
+  const navigate = useNavigate();
 
   return (
     <header className="flex items-center justify-between px-4 py-3 border-b bg-background shadow-sm sticky top-0 z-10">
@@ -16,7 +18,12 @@ export default function Header() {
 
       <div className="flex items-center gap-4">
         <ThemeToggle />
-        {/* Profile coming later */}
+        <div
+          className="cursor-pointer"
+          onClick={() => navigate("/dashboard/profile")}
+        >
+          <UserCircle size={24} />
+        </div>
       </div>
     </header>
   );
