@@ -3,6 +3,7 @@ import Sidebar from "../nav/Sidebar";
 import Header from "../nav/Header";
 import ProductsPage from "../../pages/products/ProductsPage";
 import OrdersPage from "../../pages/orders/OrdersPage";
+import UsersPage from "../../pages/users/UsersPage";
 
 
 export default function DashboardLayout() {
@@ -17,6 +18,7 @@ export default function DashboardLayout() {
             <Route path="" element={<div>Welcome to Jenga Admin</div>} />
             <Route path="products" element={<ProductsPage />} />
             <Route path="orders" element={<OrdersPage />} />
+            <Route path="users" element={<UsersPage />} />
           </Routes>
 
           <Outlet />

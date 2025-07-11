@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Pencil } from "lucide-react";
+import { Loader2, Pencil } from "lucide-react";
 import { useOrders } from "./useOrders";
 import UpdateOrderForm from "./UpdateOrderForm";
 
@@ -13,7 +13,9 @@ export default function OrdersPage() {
       <h2 className="text-xl font-bold mb-4">Orders</h2>
 
       {loading ? (
-        <div className="flex justify-center py-10">Loading...</div>
+              <div className="flex justify-center py-10">
+                  <Loader2 className="animate-spin w-6 h-6 text-muted-foreground" />
+        </div>
       ) : (
         <div className="overflow-auto">
           <table className="w-full text-sm">
