@@ -5,7 +5,7 @@ export const productSchema = z.object({
   description: z.string().optional(),
   price: z.number().nonnegative(),
   category: z.string().min(2),
-  variants: z.any().optional(), // Can use JSON.stringify on frontend
+  variants: z.any().optional(),
   stock: z.number().int().nonnegative().default(0),
   images: z.array(z.string().url()),
   isActive: z.boolean().default(true)
