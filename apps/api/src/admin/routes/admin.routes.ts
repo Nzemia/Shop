@@ -2,14 +2,18 @@ import { Router } from "express";
 import {
   getAllAdmins,
   promoteUserToAdmin,
-  demoteAdminToUser
+  demoteAdminToUser,
+  getCurrentAdmin,
+  updateCurrentAdmin
 } from "../../admin/controllers/admin.controller";
-import { requireAuth } from "../../auth/middleware/rbac.middleware";
+import { requireAuth, requireRole } from "../../auth/middleware/rbac.middleware";
 import { requireSuperAdmin } from "../middleware/superadmin.middleware";
 
 const router = Router();
 
-// SUPERADMIN access only
+router.get("/me", requireAuth, requireRole("ADMIN", "SUPERADMIN"), getCurrentAdmin);
+router.put("/me", requireAuth, requireRole("ADMIN", "SUPERADMIN"), updateCurrentAdmin);
+
 router.use(requireAuth, requireSuperAdmin);
 
 router.get("/", getAllAdmins);

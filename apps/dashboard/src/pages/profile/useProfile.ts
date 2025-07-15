@@ -5,7 +5,7 @@ export const useProfile = () => {
   const [profile, setProfile] = useState<any>(null);
 
   const fetch = async () => {
-    const res = await axios.get("/api/users/me"); // This assumes you have auth middleware
+    const res = await axios.get("/api/admin/me"); 
     setProfile(res.data);
   };
 
@@ -17,7 +17,7 @@ export const useProfile = () => {
     username: string;
     password?: string;
   }) => {
-    await axios.put("/api/users/me", data);
+    await axios.put("/api/admin/me", data);
     await fetch();
   };
 

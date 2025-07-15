@@ -28,3 +28,37 @@ export const setRole = async (email: string, newRole: "USER" | "ADMIN") => {
     }
   });
 };
+
+export const getAdminById = async (id: string) => {
+  return prisma.user.findUnique({
+    where: { id },
+    select: {
+      id: true,
+      email: true,
+      username: true,
+      role: true
+    }
+  });
+};
+
+export const updateAdminProfile = async (
+  id: string,
+  data: { username?: string; password?: string }
+) => {
+  const updateData: any = {};
+  if (data.username) updateData.username = data.username;
+  if (data.password && data.password.trim()) {
+    const bcrypt = require("bcryptjs");
+    updateData.password = await bcrypt.hash(data.password, 10);
+  }
+  return prisma.user.update({
+    where: { id },
+    data: updateData,
+    select: {
+      id: true,
+      email: true,
+      username: true,
+      role: true
+    }
+  });
+};
