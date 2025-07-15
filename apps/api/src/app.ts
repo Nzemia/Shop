@@ -8,8 +8,11 @@ import productRoutes from "./products/routes/products.routes";
 import orderRoutes from "./orders/routes/orders.routes";
 import paymentRoutes from "./payments/routes/payments.routes";
 import paymentModuleRoutes from "./modules/payments/payment.routes";
+import { uploadthingHandler } from "./uploads/handler";
+import { requireAuth, requireRole } from "./auth/middleware/rbac.middleware";
 
 dotenv.config();
+
 
 const app = express();
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
@@ -22,5 +25,10 @@ app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/payments/mpesa", paymentModuleRoutes);
+
+app.use("/api/uploadthing", requireAuth, requireRole("ADMIN", "SUPERADMIN"), uploadthingHandler);
+
+
+
 
 export default app;
