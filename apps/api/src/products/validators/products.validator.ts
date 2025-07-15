@@ -8,7 +8,8 @@ export const productSchema = z.object({
   variants: z.any().optional(),
   stock: z.number().int().nonnegative().default(0),
   images: z.array(z.string().url()),
-  isActive: z.boolean().default(true)
+  availabilityStatus: z.enum(["IN_STOCK", "OUT_OF_STOCK", "DISCONTINUED"]).default("IN_STOCK"),
+  visibilityStatus: z.enum(["VISIBLE", "HIDDEN"]).default("VISIBLE")
 });
 
 export const updateProductSchema = productSchema.partial();

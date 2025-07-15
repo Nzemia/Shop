@@ -27,4 +27,7 @@ router.post("/", validate(productSchema), createProduct);
 router.put("/:id", validate(updateProductSchema), updateProduct);
 router.delete("/:id", deleteProduct);
 
+import reviewsRouter from "./reviews.routes";
+router.use("/:id/reviews", reviewsRouter);
+
 export default router;

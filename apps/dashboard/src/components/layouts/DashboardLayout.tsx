@@ -6,7 +6,6 @@ import OrdersPage from "../../pages/orders/OrdersPage";
 import UsersPage from "../../pages/users/UsersPage";
 import AdminsPage from "../../pages/admins/AdminsPage";
 import ProfilePage from "../../pages/profile/ProfilePage";
-import { Alert } from "../ui/alert";
 
 export default function DashboardLayout() {
   return (

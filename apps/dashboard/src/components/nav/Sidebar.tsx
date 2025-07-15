@@ -9,6 +9,7 @@ import {
   ShieldCheck,
   LogOut
 } from "lucide-react";
+import { logout, useAuth } from "@/lib/auth";
 
 const links = [
   { name: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
@@ -21,6 +22,7 @@ const links = [
 export default function Sidebar() {
   const { pathname } = useLocation();
   const { isOpen, close } = useSidebarStore();
+  useAuth();
 
   return (
     <>
@@ -68,8 +70,12 @@ function SidebarContent({ pathname }: { pathname: string }) {
           </Link>
         ))}
       </nav>
+      {/** Log out */}
       <div className="mt-auto pt-4 border-t">
-        <button className="flex items-center gap-2 text-red-500 hover:underline">
+        <button
+          className="flex items-center gap-2 cursor-pointer text-red-500 hover:underline"
+          onClick={logout}
+        >
           <LogOut size={18} />
           Logout
         </button>

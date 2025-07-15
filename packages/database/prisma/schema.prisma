@@ -19,6 +19,7 @@ model User {
   // Relations
   orders    Order[]
   supportMessages SupportMessage[]
+  reviews   Review[]
   
   @@map("users")
 }
@@ -31,13 +32,15 @@ model Product {
   category    String
   variants    Json?    
   stock       Int      @default(0)
-  images      String[] 
-  isActive    Boolean  @default(true)
+  images      String[]
+  availabilityStatus AvailabilityStatus @default(IN_STOCK)
+  visibilityStatus   VisibilityStatus   @default(VISIBLE)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   // Relations
-  orderItems OrderItem[]
+  orderItems  OrderItem[]
+  reviews     Review[]
   
   @@map("products")
 }
@@ -116,6 +119,33 @@ model PasswordReset {
   @@map("password_resets")
 }
 
+model Review {
+  id        String   @id @default(cuid())
+  productId String
+  userId    String
+  rating    Int
+  review    String?
+  hidden    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  // Relations
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("reviews")
+}
+
+enum AvailabilityStatus {
+  IN_STOCK
+  OUT_OF_STOCK
+  DISCONTINUED
+}
+
+enum VisibilityStatus {
+  VISIBLE
+  HIDDEN
+}
+
 enum Role {
   USER
   ADMIN
@@ -126,6 +156,7 @@ enum OrderStatus {
   PENDING
   PAID
   CANCELED
+  DELIVERED
 }
 
 enum TrackingStatus {

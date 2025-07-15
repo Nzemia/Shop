@@ -110,5 +110,9 @@ export const useAuth = create<AuthState>()(
   )
 );
 
+export const logout = () => {
+  useAuth.getState().logout();
+};
+
 // Auto-initialize when the store is created
 useAuth.getState().initialize();
