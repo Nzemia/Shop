@@ -8,6 +8,7 @@ import productRoutes from "./products/routes/products.routes";
 import orderRoutes from "./orders/routes/orders.routes";
 import paymentRoutes from "./payments/routes/payments.routes";
 import paymentModuleRoutes from "./modules/payments/payment.routes";
+import supportRoutes from "./support/routes/support.routes";
 import { uploadthingHandler } from "./uploads/handler";
 import { requireAuth, requireRole } from "./auth/middleware/rbac.middleware";
 
@@ -25,6 +26,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/payments/mpesa", paymentModuleRoutes);
+app.use("/api/support", supportRoutes);
 
 app.use("/api/uploadthing", requireAuth, requireRole("ADMIN", "SUPERADMIN"), uploadthingHandler);
 

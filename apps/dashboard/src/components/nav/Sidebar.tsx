@@ -7,6 +7,7 @@ import {
   Users,
   Package,
   ShieldCheck,
+  MessageSquare,
   LogOut
 } from "lucide-react";
 import { logout, useAuth } from "@/lib/auth";
@@ -16,7 +17,8 @@ const links = [
   { name: "Products", icon: Package, path: "/dashboard/products" },
   { name: "Orders", icon: ShoppingCart, path: "/dashboard/orders" },
   { name: "Users", icon: Users, path: "/dashboard/users" },
-  { name: "Admins", icon: ShieldCheck, path: "/dashboard/admins" }
+  { name: "Admins", icon: ShieldCheck, path: "/dashboard/admins" },
+  { name: "Support", icon: MessageSquare, path: "/dashboard/support" }
 ];
 
 export default function Sidebar() {

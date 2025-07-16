@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Loader2, Pencil, Plus, Trash } from "lucide-react";
 import { useProducts } from "./useProducts";
 import ProductForm from "./ProductForm";
+import ProductDisplay from "./ProductDisplay";
 
 export default function ProductsPage() {
   const { products, loading, deleteProduct } = useProducts();
@@ -28,43 +29,44 @@ export default function ProductsPage() {
           <Loader2 className="animate-spin w-6 h-6 text-muted-foreground" />
         </div>
       ) : (
-        <div className="overflow-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b">
-                <th className="text-left p-2">Name</th>
-                <th className="text-left p-2">Category</th>
-                <th className="text-left p-2">Price</th>
-                <th className="text-left p-2">Stock</th>
-                <th className="text-left p-2">Active</th>
-                <th className="text-left p-2">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products?.map((p) => (
-                <tr key={p.id} className="border-b hover:bg-muted/40">
-                  <td className="p-2">{p.name}</td>
-                  <td className="p-2">{p.category}</td>
-                  <td className="p-2">Ksh {Number(p.price).toFixed(2)}</td>
-                  <td className="p-2">{p.stock}</td>
-                  <td className="p-2">{p.isActive ? "Yes" : "No"}</td>
-                  <td className="p-2 flex gap-2">
-                    <button
-                      onClick={() => {
-                        setEditing(p);
-                        setOpen(true);
-                      }}
-                    >
-                      <Pencil size={16} />
-                    </button>
-                    <button onClick={() => deleteProduct(p.id)}>
-                      <Trash size={16} className="text-red-500" />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
+          {products?.map((p) => (
+            <div key={p.id} className="relative group">
+              <div className="absolute top-2 right-2 z-10 flex gap-2 opacity-0 group-hover:opacity-100 transition">
+                <button
+                  onClick={() => {
+                    setEditing(p);
+                    setOpen(true);
+                  }}
+                  className="bg-white rounded-full p-1 shadow hover:bg-primary hover:text-white transition"
+                  title="Edit"
+                >
+                  <Pencil size={16} />
+                </button>
+                <button
+                  onClick={async () => {
+                    await deleteProduct(p.id);
+                    window.setTimeout(() => {
+                      // Wait for state update
+                      import("sonner").then(({ toast }) => toast.success("Product deleted"));
+                    }, 100);
+                  }}
+                  className="bg-white rounded-full p-1 shadow hover:bg-red-500 hover:text-white transition"
+                  title="Delete"
+                >
+                  <Trash size={16} />
+                </button>
+              </div>
+              <ProductDisplay
+                name={p.name}
+                images={p.images}
+                price={p.price}
+                category={p.category}
+                rating={p.rating}
+                reviews={p.reviews}
+              />
+            </div>
+          ))}
         </div>
       )}
 

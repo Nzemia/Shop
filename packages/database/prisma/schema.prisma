@@ -88,14 +88,33 @@ model SupportMessage {
   userId    String
   email     String
   username  String
+  subject   String
   message   String
+  status    SupportStatus @default(OPEN)
+  priority  SupportPriority @default(MEDIUM)
   isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   
   // Relations
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  responses SupportResponse[]
   
   @@map("support_messages")
+}
+
+model SupportResponse {
+  id        String   @id @default(cuid())
+  messageId String
+  adminId   String
+  adminName String
+  response  String
+  createdAt DateTime @default(now())
+  
+  // Relations
+  message SupportMessage @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  
+  @@map("support_responses")
 }
 
 model Session {
@@ -176,4 +195,18 @@ enum PaymentStatus {
   COMPLETED
   FAILED
   REFUNDED
+}
+
+enum SupportStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+enum SupportPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
 }
