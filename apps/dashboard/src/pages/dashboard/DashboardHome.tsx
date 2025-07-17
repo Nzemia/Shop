@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import {
-    TrendingUp,
-    TrendingDown,
     Package,
     ShoppingCart,
     Users,
@@ -22,9 +20,7 @@ import { useAuth } from "../../lib/auth";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../components/ui/card";
 import { Badge } from "../../components/ui/badge";
 import { Button } from "../../components/ui/button";
-import { Separator } from "../../components/ui/separator";
 import { useNavigate } from "react-router-dom";
-import api from "../../lib/api";
 import { Progress } from "@/components/ui/progress";
 
 interface DashboardStats {
@@ -131,14 +127,14 @@ export default function DashboardHome() {
         }).format(amount);
     };
 
-    const formatDate = (dateString: string) => {
-        return new Date(dateString).toLocaleDateString('en-KE', {
-            month: 'short',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-    };
+    // const formatDate = (dateString: string) => {
+    //     return new Date(dateString).toLocaleDateString('en-KE', {
+    //         month: 'short',
+    //         day: 'numeric',
+    //         hour: '2-digit',
+    //         minute: '2-digit'
+    //     });
+    // };
 
     const getStatusBadge = (status: string) => {
         const variants: Record<string, { variant: any; className?: string }> = {
