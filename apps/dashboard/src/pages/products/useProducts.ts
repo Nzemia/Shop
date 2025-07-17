@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import axios from "axios";
+import api from "../../lib/api";
 import { toast } from "sonner";
 import type { Product, ProductFormData } from "./productSchema";
 
@@ -22,7 +22,7 @@ export const useProducts = (): UseProductsReturn => {
     try {
       setLoading(true);
       setError(null);
-      const response = await axios.get("/api/products");
+      const response = await api.get("/products");
       setProducts(response.data);
     } catch (err: any) {
       const errorMessage = err?.response?.data?.message || err?.message || "Failed to fetch products";
@@ -44,7 +44,7 @@ export const useProducts = (): UseProductsReturn => {
         images: Array.isArray(data.images) ? data.images : []
       };
 
-      await axios.post("/api/products", payload);
+      await api.post("/products", payload);
       await fetchProducts();
       toast.success("Product created successfully!");
     } catch (err: any) {
@@ -61,7 +61,7 @@ export const useProducts = (): UseProductsReturn => {
         images: Array.isArray(data.images) ? data.images : []
       };
 
-      await axios.put(`/api/products/${id}`, payload);
+      await api.put(`/products/${id}`, payload);
       await fetchProducts();
       toast.success("Product updated successfully!");
     } catch (err: any) {
@@ -73,7 +73,7 @@ export const useProducts = (): UseProductsReturn => {
 
   const deleteProduct = async (id: string): Promise<void> => {
     try {
-      await axios.delete(`/api/products/${id}`);
+      await api.delete(`/products/${id}`);
       await fetchProducts();
       toast.success("Product deleted successfully!");
     } catch (err: any) {

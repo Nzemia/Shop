@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useProducts } from "./useProducts";
 import { productSchema, PRODUCT_CATEGORIES } from "./productSchema";
 import type { ProductFormData } from "./productSchema";
-import ProductImageUploader from "./ProductImageUploader";
+import ImageUploader from "../../components/ImageUploader";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,9 +32,9 @@ export default function ProductForm({ initialData, onClose }: ProductFormProps) 
       category: "",
       stock: 0,
       images: [],
-      isActive: true,
-      rating: undefined,
-      reviews: undefined
+      availabilityStatus: "IN_STOCK",
+      visibilityStatus: "VISIBLE",
+      variants: null
     }
   });
 
@@ -67,10 +67,10 @@ export default function ProductForm({ initialData, onClose }: ProductFormProps) 
         price: data.price,
         category: data.category,
         stock: data.stock,
-        images: data.images,
-        isActive: data.isActive ?? true,
-        rating: data.rating,
-        reviews: data.reviews
+        images: data.images || [],
+        availabilityStatus: data.availabilityStatus || "IN_STOCK",
+        visibilityStatus: data.visibilityStatus || "VISIBLE",
+        variants: data.variants || null
       };
 
       if (isEditing) {
@@ -195,19 +195,23 @@ export default function ProductForm({ initialData, onClose }: ProductFormProps) 
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="price">Price ($) *</Label>
+                    <Label htmlFor="price" className="flex items-center space-x-2">
+                      <span className="text-green-600 font-semibold">KES</span>
+                      <span>Price *</span>
+                    </Label>
                     <Input
                       {...register("price", { valueAsNumber: true })}
                       id="price"
                       type="number"
-                      min={0.01}
-                      step={0.01}
-                      placeholder="0.00"
+                      min={1}
+                      step={1}
+                      placeholder="100"
                       className={errors.price ? "border-red-500" : ""}
                     />
                     {errors.price && (
                       <p className="text-red-500 text-sm">{String(errors.price.message)}</p>
                     )}
+                    <p className="text-xs text-gray-500">Enter amount in Kenyan Shillings (KES)</p>
                   </div>
 
                   <div className="space-y-2">
@@ -226,15 +230,39 @@ export default function ProductForm({ initialData, onClose }: ProductFormProps) 
                   </div>
                 </div>
 
-                <div className="flex items-center space-x-3">
-                  <Switch
-                    checked={watchedValues.isActive}
-                    onCheckedChange={(checked) => setValue("isActive", checked)}
-                    id="isActive"
-                  />
-                  <Label htmlFor="isActive" className="text-sm font-medium">
-                    Product is active and visible to customers
-                  </Label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="availabilityStatus">Availability Status</Label>
+                    <Select
+                      value={watchedValues.availabilityStatus}
+                      onValueChange={(value) => setValue("availabilityStatus", value, { shouldValidate: true })}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select availability" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="IN_STOCK">In Stock</SelectItem>
+                        <SelectItem value="OUT_OF_STOCK">Out of Stock</SelectItem>
+                        <SelectItem value="DISCONTINUED">Discontinued</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="visibilityStatus">Visibility Status</Label>
+                    <Select
+                      value={watchedValues.visibilityStatus}
+                      onValueChange={(value) => setValue("visibilityStatus", value, { shouldValidate: true })}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select visibility" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="VISIBLE">Visible</SelectItem>
+                        <SelectItem value="HIDDEN">Hidden</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -245,12 +273,14 @@ export default function ProductForm({ initialData, onClose }: ProductFormProps) 
                 <CardTitle className="text-lg">Product Images</CardTitle>
               </CardHeader>
               <CardContent>
-                <ProductImageUploader
+                <ImageUploader
                   onUpload={handleImageUpload}
                   onRemoveImage={removeImage}
                   images={images}
                   disabled={isSubmitting}
-                  maxImages={5}
+                  maxImages={10}
+                  type="product"
+                  multiple={true}
                 />
                 {errors.images && (
                   <p className="text-red-500 text-sm mt-2">{String(errors.images.message)}</p>
@@ -258,52 +288,7 @@ export default function ProductForm({ initialData, onClose }: ProductFormProps) 
               </CardContent>
             </Card>
 
-            {/* Reviews & Rating (for editing existing products) */}
-            {isEditing && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg flex items-center space-x-2">
-                    <Star className="h-5 w-5" />
-                    <span>Reviews & Rating</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="rating">Average Rating (0-5)</Label>
-                      <Input
-                        {...register("rating", { valueAsNumber: true })}
-                        id="rating"
-                        type="number"
-                        min={0}
-                        max={5}
-                        step={0.1}
-                        placeholder="0.0"
-                        className={errors.rating ? "border-red-500" : ""}
-                      />
-                      {errors.rating && (
-                        <p className="text-red-500 text-sm">{String(errors.rating.message)}</p>
-                      )}
-                    </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="reviews">Number of Reviews</Label>
-                      <Input
-                        {...register("reviews", { valueAsNumber: true })}
-                        id="reviews"
-                        type="number"
-                        min={0}
-                        placeholder="0"
-                        className={errors.reviews ? "border-red-500" : ""}
-                      />
-                      {errors.reviews && (
-                        <p className="text-red-500 text-sm">{String(errors.reviews.message)}</p>
-                      )}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
 
             {/* Form Actions */}
             <div className="flex justify-end space-x-3 pt-6 border-t">

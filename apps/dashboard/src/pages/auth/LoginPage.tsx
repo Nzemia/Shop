@@ -20,8 +20,7 @@ export default function LoginPage() {
     setError("");
 
     try {
-      const res = await axios.post("/api/auth/login", { email, password });
-      login(res.data.token, res.data.user);
+      await login(email, password);
       navigate("/dashboard");
     } catch (err: any) {
       setError(

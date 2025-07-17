@@ -282,8 +282,11 @@ async function main() {
         userId: users[0].id,
         email: users[0].email,
         username: users[0].username,
+        subject: "Order Tracking Issue",
         message:
           "I need help with my recent order. The tracking shows it's shipped but I haven't received any updates.",
+        status: "OPEN",
+        priority: "MEDIUM",
         isRead: false
       }
     }),
@@ -292,8 +295,11 @@ async function main() {
         userId: users[1].id,
         email: users[1].email,
         username: users[1].username,
+        subject: "Excellent Service Feedback",
         message:
           "Great service! My order arrived quickly and everything was perfect. Thank you!",
+        status: "RESOLVED",
+        priority: "LOW",
         isRead: true
       }
     }),
@@ -302,8 +308,11 @@ async function main() {
         userId: users[2].id,
         email: users[2].email,
         username: users[2].username,
+        subject: "Order Cancellation Request",
         message:
           "I would like to cancel my order ORD-2024-003. Please let me know the process.",
+        status: "OPEN",
+        priority: "HIGH",
         isRead: false
       }
     })
@@ -311,11 +320,40 @@ async function main() {
 
   console.log("💬 Created support messages:", supportMessages.length);
 
+  // Create sample support responses
+  const supportResponses = await Promise.all([
+    prisma.supportResponse.create({
+      data: {
+        messageId: supportMessages[0].id,
+        adminId: admin.id,
+        adminName: admin.username,
+        response: "Hi John! I've checked your order status and I can see it's currently in transit. You should receive it within 2-3 business days. I'll send you the updated tracking information via email."
+      }
+    }),
+    prisma.supportResponse.create({
+      data: {
+        messageId: supportMessages[1].id,
+        adminId: admin.id,
+        adminName: admin.username,
+        response: "Thank you so much for your positive feedback, Jane! We're thrilled to hear that you had a great experience with us. We appreciate your business and look forward to serving you again!"
+      }
+    }),
+    prisma.supportResponse.create({
+      data: {
+        messageId: supportMessages[2].id,
+        adminId: superAdmin.id,
+        adminName: superAdmin.username,
+        response: "Hi Mike! I understand you'd like to cancel order ORD-2024-003. Since it's still pending and hasn't been processed yet, I can cancel it for you right away. The cancellation will be processed within 24 hours."
+      }
+    })
+  ]);
+
+  console.log("💭 Created support responses:", supportResponses.length);
+
   console.log("✅ Database seeding completed successfully!");
   console.log("\n📊 Summary:");
   console.log(
-    `- Users: ${1 + 1 + users.length} (1 SUPERADMIN, 1 ADMIN, ${
-      users.length
+    `- Users: ${1 + 1 + users.length} (1 SUPERADMIN, 1 ADMIN, ${users.length
     } USER)`
   );
   console.log(`- Products: ${products.length}`);

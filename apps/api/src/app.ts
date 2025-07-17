@@ -9,7 +9,7 @@ import orderRoutes from "./orders/routes/orders.routes";
 import paymentRoutes from "./payments/routes/payments.routes";
 import paymentModuleRoutes from "./modules/payments/payment.routes";
 import supportRoutes from "./support/routes/support.routes";
-import { uploadthingHandler } from "./uploads/handler";
+import uploadRoutes from "./uploads/routes";
 import { requireAuth, requireRole } from "./auth/middleware/rbac.middleware";
 
 dotenv.config();
@@ -28,7 +28,8 @@ app.use("/api/payments", paymentRoutes);
 app.use("/api/payments/mpesa", paymentModuleRoutes);
 app.use("/api/support", supportRoutes);
 
-app.use("/api/uploadthing", requireAuth, requireRole("ADMIN", "SUPERADMIN"), uploadthingHandler);
+// Upload routes
+app.use("/api/uploads", uploadRoutes);
 
 
 

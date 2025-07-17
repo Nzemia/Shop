@@ -1,5 +1,6 @@
-import { Package, Eye, EyeOff, AlertCircle, TrendingUp, DollarSign } from "lucide-react";
+import { Package, Eye, EyeOff, AlertCircle, TrendingUp } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { formatKES } from "../../lib/currency";
 import type { Product } from "./productSchema";
 
 interface ProductStatsProps {
@@ -8,20 +9,24 @@ interface ProductStatsProps {
 
 export default function ProductStats({ products }: ProductStatsProps) {
     const totalProducts = products.length;
-    const activeProducts = products.filter(p => p.isActive).length;
+    const visibleProducts = products.filter(p => p.visibilityStatus === "VISIBLE").length;
+    const inStockProducts = products.filter(p => p.availabilityStatus === "IN_STOCK").length;
     const lowStockProducts = products.filter(p => p.stock < 10 && p.stock > 0).length;
-    const outOfStockProducts = products.filter(p => p.stock === 0).length;
-    const totalValue = products.reduce((sum, p) => sum + (p.price * p.stock), 0);
-    const averagePrice = totalProducts > 0 ? products.reduce((sum, p) => sum + p.price, 0) / totalProducts : 0;
+    const outOfStockProducts = products.filter(p => p.availabilityStatus === "OUT_OF_STOCK").length;
 
-    const formatCurrency = (amount: number) => {
-        return new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 0,
-        }).format(amount);
-    };
+    // Calculate total value and average price with proper number handling
+    const totalValue = products.reduce((sum, p) => {
+        const price = typeof p.price === 'number' && !isNaN(p.price) ? p.price : 0;
+        const stock = typeof p.stock === 'number' && !isNaN(p.stock) ? p.stock : 0;
+        return sum + (price * stock);
+    }, 0);
+
+    const averagePrice = totalProducts > 0
+        ? products.reduce((sum, p) => {
+            const price = typeof p.price === 'number' && !isNaN(p.price) ? p.price : 0;
+            return sum + price;
+        }, 0) / totalProducts
+        : 0;
 
     const stats = [
         {
@@ -33,12 +38,20 @@ export default function ProductStats({ products }: ProductStatsProps) {
             bgColor: "bg-blue-50"
         },
         {
-            title: "Active Products",
-            value: activeProducts.toString(),
+            title: "Visible Products",
+            value: visibleProducts.toString(),
             icon: Eye,
             description: "Currently visible to customers",
             color: "text-green-600",
             bgColor: "bg-green-50"
+        },
+        {
+            title: "In Stock",
+            value: inStockProducts.toString(),
+            icon: Package,
+            description: "Products available for sale",
+            color: "text-blue-600",
+            bgColor: "bg-blue-50"
         },
         {
             title: "Low Stock Alert",
@@ -58,17 +71,17 @@ export default function ProductStats({ products }: ProductStatsProps) {
         },
         {
             title: "Total Inventory Value",
-            value: formatCurrency(totalValue),
-            icon: DollarSign,
-            description: "Total value of all stock",
+            value: formatKES(totalValue),
+            icon: TrendingUp,
+            description: "Total value of all stock in KES",
             color: "text-purple-600",
             bgColor: "bg-purple-50"
         },
         {
             title: "Average Price",
-            value: formatCurrency(averagePrice),
+            value: formatKES(averagePrice),
             icon: TrendingUp,
-            description: "Average product price",
+            description: "Average product price in KES",
             color: "text-indigo-600",
             bgColor: "bg-indigo-50"
         }

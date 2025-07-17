@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../lib/api";
 
 export const useProfile = () => {
   const [profile, setProfile] = useState<any>(null);
 
   const fetch = async () => {
-    const res = await axios.get("/api/admin/me"); 
+    const res = await api.get("/admin/me");
     setProfile(res.data);
   };
 
@@ -17,7 +17,7 @@ export const useProfile = () => {
     username: string;
     password?: string;
   }) => {
-    await axios.put("/api/admin/me", data);
+    await api.put("/admin/me", data);
     await fetch();
   };
 

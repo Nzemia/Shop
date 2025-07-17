@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../lib/api";
 
 export const useAdmins = () => {
   const [admins, setAdmins] = useState<any[]>([]);
@@ -7,7 +7,7 @@ export const useAdmins = () => {
 
   const fetch = async () => {
     setLoading(true);
-    const res = await axios.get("/api/admins");
+    const res = await api.get("/admins");
     setAdmins(res.data);
     setLoading(false);
   };
@@ -17,12 +17,12 @@ export const useAdmins = () => {
   }, []);
 
   const promote = async (email: string) => {
-    await axios.post("/api/admins/promote", { email });
+    await api.post("/admins/promote", { email });
     await fetch();
   };
 
   const demote = async (email: string) => {
-    await axios.post("/api/admins/demote", { email });
+    await api.post("/admins/demote", { email });
     await fetch();
   };
 

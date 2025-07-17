@@ -22,7 +22,7 @@ interface BulkActionsProps {
     onSelectAll: () => void;
     onDeselectAll: () => void;
     onBulkDelete: (ids: string[]) => Promise<void>;
-    onBulkStatusChange: (ids: string[], isActive: boolean) => Promise<void>;
+    onBulkStatusChange: (ids: string[], status: string) => Promise<void>;
 }
 
 export default function BulkActions({
@@ -52,11 +52,11 @@ export default function BulkActions({
         }
     };
 
-    const handleBulkStatusChange = async (isActive: boolean) => {
+    const handleBulkStatusChange = async (status: "VISIBLE" | "HIDDEN") => {
         try {
             setIsLoading(true);
-            await onBulkStatusChange(selectedProducts, isActive);
-            toast.success(`${selectedCount} products ${isActive ? 'activated' : 'deactivated'} successfully`);
+            await onBulkStatusChange(selectedProducts, status);
+            toast.success(`${selectedCount} products ${status === "VISIBLE" ? 'made visible' : 'hidden'} successfully`);
         } catch (error) {
             toast.error("Failed to update product status");
         } finally {
@@ -71,11 +71,10 @@ export default function BulkActions({
             'ID',
             'Name',
             'Category',
-            'Price',
+            'Price (KES)',
             'Stock',
-            'Status',
-            'Rating',
-            'Reviews'
+            'Availability Status',
+            'Visibility Status'
         ];
 
         const csvData = selectedProductData.map(product => [
@@ -84,9 +83,8 @@ export default function BulkActions({
             product.category,
             product.price,
             product.stock,
-            product.isActive ? 'Active' : 'Inactive',
-            product.rating || '',
-            product.reviews || ''
+            product.availabilityStatus,
+            product.visibilityStatus
         ]);
 
         const csvContent = [
@@ -153,21 +151,21 @@ export default function BulkActions({
                 <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => handleBulkStatusChange(true)}
+                    onClick={() => handleBulkStatusChange("VISIBLE")}
                     disabled={isLoading}
                 >
                     <Eye className="h-4 w-4 mr-2" />
-                    Activate
+                    Make Visible
                 </Button>
 
                 <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => handleBulkStatusChange(false)}
+                    onClick={() => handleBulkStatusChange("HIDDEN")}
                     disabled={isLoading}
                 >
                     <EyeOff className="h-4 w-4 mr-2" />
-                    Deactivate
+                    Hide
                 </Button>
 
                 <AlertDialog>

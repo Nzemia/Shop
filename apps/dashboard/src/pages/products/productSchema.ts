@@ -9,8 +9,8 @@ export const productSchema = z.object({
     .max(500, "Description must be less than 500 characters")
     .optional(),
   price: z.number()
-    .min(0.01, "Price must be greater than 0")
-    .max(999999.99, "Price must be less than $1,000,000"),
+    .min(1, "Price must be at least KES 1")
+    .max(999999999, "Price must be less than KES 1,000,000,000"),
   category: z.string()
     .min(2, "Category must be at least 2 characters")
     .max(50, "Category must be less than 50 characters"),
@@ -19,17 +19,12 @@ export const productSchema = z.object({
     .min(0, "Stock cannot be negative")
     .max(999999, "Stock must be less than 1,000,000"),
   images: z.array(z.string().url("Invalid image URL"))
-    .min(1, "At least one image is required")
-    .max(5, "Maximum 5 images allowed"),
-  isActive: z.boolean().default(true),
-  rating: z.number()
-    .min(0, "Rating cannot be negative")
-    .max(5, "Rating cannot exceed 5")
-    .optional(),
-  reviews: z.number()
-    .int("Reviews must be a whole number")
-    .min(0, "Reviews cannot be negative")
-    .optional()
+    .max(10, "Maximum 10 images allowed")
+    .default([]), // Allow empty array initially
+  // Match database schema fields
+  availabilityStatus: z.enum(["IN_STOCK", "OUT_OF_STOCK", "DISCONTINUED"]).default("IN_STOCK"),
+  visibilityStatus: z.enum(["VISIBLE", "HIDDEN"]).default("VISIBLE"),
+  variants: z.any().optional(), // JSON field
 });
 
 export const updateProductSchema = productSchema.partial();

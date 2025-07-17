@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../lib/api";
 
 export const useOrders = () => {
   const [orders, setOrders] = useState<any[]>([]);
@@ -7,7 +7,7 @@ export const useOrders = () => {
 
   const fetch = async () => {
     setLoading(true);
-    const res = await axios.get("/api/orders");
+    const res = await api.get("/orders");
     setOrders(res.data);
     setLoading(false);
   };
@@ -20,7 +20,7 @@ export const useOrders = () => {
     id: string,
     data: { status: string; trackingStatus: string }
   ) => {
-    await axios.patch(`/api/orders/${id}/status`, data);
+    await api.patch(`/orders/${id}/status`, data);
     await fetch();
   };
 
