@@ -1,6 +1,6 @@
 import { useSidebarStore } from "../../store/useSidebarStore";
 import { X, ChevronRight, User, Settings } from "lucide-react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
   ShoppingCart,
@@ -56,7 +56,7 @@ export default function Sidebar() {
                     <Package className="w-4 h-4 text-primary-foreground" />
                   </div>
                   <div>
-                    <h1 className="text-lg font-bold text-foreground">Jenga Admin</h1>
+                    <h1 className="text-lg font-bold text-foreground">Jenga Shop</h1>
                     <p className="text-xs text-muted-foreground">Management Portal</p>
                   </div>
                 </div>
@@ -109,7 +109,7 @@ export default function Sidebar() {
                     className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors text-sm"
                   >
                     <Settings className="w-4 h-4" />
-                    <span>Settings</span>
+                    <span>Profile</span>
                     <ChevronRight className="w-4 h-4 ml-auto" />
                   </Link>
 
