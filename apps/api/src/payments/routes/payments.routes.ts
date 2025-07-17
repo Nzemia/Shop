@@ -1,9 +1,11 @@
 import { Router } from "express";
 import {
+  initiateMpesaPayment,
+  queryMpesaPayment,
+  handleMpesaCallback,
   markPaymentAsCompleted,
   markPaymentAsFailed,
-  submitMpesaTransaction,
-  simulateMpesaWebhook
+  submitMpesaTransaction
 } from "../../payments/controllers/payments.controller";
 import validate from "../../auth/middleware/auth.middleware";
 import {
@@ -14,9 +16,17 @@ import { mpesaCodeSchema } from "../../payments/validators/payments.validator";
 
 const router = Router();
 
+// M-Pesa callback (no auth required)
+router.post("/mpesa-callback", handleMpesaCallback);
+
+// Protected routes
 router.use(requireAuth);
 
-// Client submits M-PESA code
+// M-Pesa payment initiation and query
+router.post("/mpesa/initiate/:orderId", initiateMpesaPayment);
+router.get("/mpesa/query/:orderId", queryMpesaPayment);
+
+// Client submits M-PESA code (manual verification)
 router.post(
   "/submit-mpesa/:orderId",
   validate(mpesaCodeSchema),
@@ -34,8 +44,5 @@ router.post(
   requireRole("ADMIN", "SUPERADMIN"),
   markPaymentAsFailed
 );
-
-// Webhook (for future simulation)
-router.post("/mpesa-webhook", simulateMpesaWebhook);
 
 export default router;
