@@ -6,18 +6,21 @@ import {
 } from "react-router-dom";
 import { useEffect } from "react";
 import DashboardLayout from "./components/layouts/DashboardLayout";
-import AccessDenied from "./pages/errors/AccessDenied";
 import ProtectedRoute from "./routes/ProtectedRoute";
-import NotFound from "./pages/errors/NotFound";
 import LoginPage from "./pages/auth/LoginPage";
 import { useAuth } from "./lib/auth";
+import NotFoundPage from "./pages/errors/NotFoundPage";
+import AccessDeniedPage from "./pages/errors/AccessDeniedPage";
 
 export default function App() {
   const { isAuthenticated, isLoading, initialize } = useAuth();
 
   // Initialize auth state on app start
   useEffect(() => {
-    initialize();
+    const initAuth = async () => {
+      await initialize();
+    };
+    initAuth();
   }, [initialize]);
 
   if (isLoading) {
@@ -55,7 +58,7 @@ export default function App() {
         />
 
         {/* Error pages */}
-        <Route path="/access-denied" element={<AccessDenied />} />
+        <Route path="/access-denied" element={<AccessDeniedPage />} />
 
         {/* Protected routes */}
         <Route
@@ -68,7 +71,7 @@ export default function App() {
         />
 
         {/* 404 fallback */}
-        <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>
   );

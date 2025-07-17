@@ -20,7 +20,7 @@ interface AuthState {
 interface AuthActions {
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
-  initialize: () => void;
+  initialize: () => Promise<void>;
   setLoading: (loading: boolean) => void;
 }
 
@@ -72,11 +72,47 @@ const useAuthStore = create<AuthState & AuthActions>()(
         sessionStorage.removeItem('authToken');
       },
 
-      initialize: () => {
+      initialize: async () => {
         const state = get();
+        set({ isLoading: true });
+
         if (state.token && state.user) {
-          set({ isAuthenticated: true });
-          localStorage.setItem('authToken', state.token);
+          // Verify the token is still valid
+          try {
+            const response = await axios.get('http://localhost:8080/api/auth/verify', {
+              headers: { Authorization: `Bearer ${state.token}` }
+            });
+
+            if (response.data.valid && response.data.user) {
+              set({
+                user: response.data.user,
+                isAuthenticated: true,
+                isLoading: false
+              });
+              localStorage.setItem('authToken', state.token);
+            } else {
+              // Token is invalid, clear auth state
+              set({
+                token: null,
+                user: null,
+                isAuthenticated: false,
+                isLoading: false
+              });
+              localStorage.removeItem('authToken');
+            }
+          } catch (error) {
+            // Token verification failed, clear auth state
+            console.error('Token verification failed:', error);
+            set({
+              token: null,
+              user: null,
+              isAuthenticated: false,
+              isLoading: false
+            });
+            localStorage.removeItem('authToken');
+          }
+        } else {
+          set({ isLoading: false });
         }
       },
 
@@ -98,7 +134,20 @@ const useAuthStore = create<AuthState & AuthActions>()(
 // Hook for components
 export const useAuth = () => {
   const store = useAuthStore();
-  return store;
+
+  // Add permission helpers
+  const isSuperAdmin = store.user?.role === 'SUPERADMIN';
+  const isAdmin = store.user?.role === 'ADMIN' || isSuperAdmin;
+  const canManageUsers = isAdmin;
+  const canPromoteUsers = isSuperAdmin; // Only SUPERADMIN can change roles
+
+  return {
+    ...store,
+    isSuperAdmin,
+    isAdmin,
+    canManageUsers,
+    canPromoteUsers
+  };
 };
 
 // Utility functions for API calls and uploadthing

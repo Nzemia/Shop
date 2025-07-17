@@ -118,3 +118,75 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  /* Mobile Menu Animations */
+  .mobile-menu-enter {
+    animation: slideInLeft 0.3s ease-out forwards;
+  }
+  
+  .mobile-menu-exit {
+    animation: slideOutLeft 0.3s ease-in forwards;
+  }
+  
+  .backdrop-enter {
+    animation: fadeIn 0.3s ease-out forwards;
+  }
+  
+  .backdrop-exit {
+    animation: fadeOut 0.3s ease-in forwards;
+  }
+  
+  @keyframes slideInLeft {
+    from {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideOutLeft {
+    from {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+  
+  /* Smooth transitions for menu items */
+  .menu-item {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .menu-item:hover {
+    transform: translateX(4px);
+  }
+  
+  .menu-item.active {
+    transform: scale(1.02);
+  }
+}

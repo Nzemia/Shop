@@ -4,9 +4,9 @@ import Header from "../nav/Header";
 import ProductsPage from "../../pages/products/ProductsPage";
 import OrdersPage from "../../pages/orders/OrdersPage";
 import UsersPage from "../../pages/users/UsersPage";
-import AdminsPage from "../../pages/admins/AdminsPage";
 import ProfilePage from "../../pages/profile/ProfilePage";
 import { SupportList, SupportDetail } from "../../pages/support";
+import NotFoundPage from "../../pages/errors/NotFoundPage";
 
 export default function DashboardLayout() {
   return (
@@ -29,10 +29,10 @@ export default function DashboardLayout() {
             <Route path="products" element={<ProductsPage />} />
             <Route path="orders" element={<OrdersPage />} />
             <Route path="users" element={<UsersPage />} />
-            <Route path="admins" element={<AdminsPage />} />
             <Route path="support" element={<SupportList />} />
             <Route path="support/:id" element={<SupportDetail />} />
             <Route path="profile" element={<ProfilePage />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
 
           <Outlet />
