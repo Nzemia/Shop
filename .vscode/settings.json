@@ -3,5 +3,6 @@
         "Jenga",
         "jengashop",
         "SUPERADMIN"
-    ]
+    ],
+    "typescript.autoClosingTags": false
 }

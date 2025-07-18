@@ -8,6 +8,7 @@
         "migrate": "prisma migrate dev",
         "migrate:prod": "prisma migrate deploy",
         "seed": "tsx src/seed.ts",
+        "seed:products": "tsx src/seed-products.ts",
         "studio": "prisma studio",
         "reset": "prisma migrate reset",
         "postinstall": "prisma generate",
