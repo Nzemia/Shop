@@ -1,6 +1,7 @@
-import { useState } from "react"
-import { Link } from "react-router-dom"
-import { Menu, Search, ShoppingCart, User, X } from "lucide-react"
+import { useState, useEffect } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import { Menu, Search, ShoppingCart, User, LogOut } from "lucide-react"
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
@@ -14,14 +15,28 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Badge } from "@/components/ui/badge"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { useAuthStore } from "@/lib/auth-store"
 
 export function Header() {
     const [isSearchOpen, setIsSearchOpen] = useState(false)
     const [searchQuery, setSearchQuery] = useState("")
+    const navigate = useNavigate()
 
-    // Mock data - replace with actual state management
+    const { user, isAuthenticated, logout, verifyAuth } = useAuthStore()
+
+    // Mock data - replace with actual cart state management
     const cartItemsCount = 3
-    const isAuthenticated = false // Replace with actual auth state
+
+    useEffect(() => {
+        // Verify auth on component mount
+        verifyAuth()
+    }, [verifyAuth])
+
+    const handleLogout = () => {
+        logout()
+        toast.success('Logged out successfully')
+        navigate('/')
+    }
 
     const navigationItems = [
         { name: "Home", href: "/" },
@@ -110,11 +125,22 @@ export function Header() {
                                     <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                                         <Avatar className="h-8 w-8">
                                             <AvatarImage src="/placeholder-avatar.jpg" alt="Profile" />
-                                            <AvatarFallback>JD</AvatarFallback>
+                                            <AvatarFallback>
+                                                {user?.username?.charAt(0).toUpperCase() || 'U'}
+                                            </AvatarFallback>
                                         </Avatar>
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent className="w-56" align="end" forceMount>
+                                    <div className="flex items-center justify-start gap-2 p-2">
+                                        <div className="flex flex-col space-y-1 leading-none">
+                                            <p className="font-medium">Hello, {user?.username}!</p>
+                                            <p className="w-[200px] truncate text-sm text-muted-foreground">
+                                                {user?.email}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <DropdownMenuSeparator />
                                     <DropdownMenuItem>
                                         <User className="mr-2 h-4 w-4" />
                                         <span>Profile</span>
@@ -124,14 +150,17 @@ export function Header() {
                                         <span>Orders</span>
                                     </DropdownMenuItem>
                                     <DropdownMenuSeparator />
-                                    <DropdownMenuItem>
+                                    <DropdownMenuItem onClick={handleLogout}>
+                                        <LogOut className="mr-2 h-4 w-4" />
                                         <span>Sign out</span>
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         ) : (
-                            <Button variant="ghost" size="icon">
-                                <User className="h-5 w-5" />
+                            <Button variant="ghost" size="icon" asChild>
+                                <Link to="/login">
+                                    <User className="h-5 w-5" />
+                                </Link>
                             </Button>
                         )}
 
@@ -177,6 +206,10 @@ export function Header() {
                                     <div className="pt-4 border-t">
                                         {isAuthenticated ? (
                                             <div className="space-y-2">
+                                                <div className="px-3 py-2 text-sm">
+                                                    <p className="font-medium">Hello, {user?.username}!</p>
+                                                    <p className="text-muted-foreground truncate">{user?.email}</p>
+                                                </div>
                                                 <Button variant="ghost" className="w-full justify-start">
                                                     <User className="mr-2 h-4 w-4" />
                                                     Profile
@@ -185,15 +218,18 @@ export function Header() {
                                                     <ShoppingCart className="mr-2 h-4 w-4" />
                                                     Orders
                                                 </Button>
-                                                <Button variant="outline" className="w-full">
+                                                <Button variant="outline" className="w-full" onClick={handleLogout}>
+                                                    <LogOut className="mr-2 h-4 w-4" />
                                                     Sign out
                                                 </Button>
                                             </div>
                                         ) : (
                                             <div className="space-y-2">
-                                                <Button className="w-full">Sign in</Button>
-                                                <Button variant="outline" className="w-full">
-                                                    Sign up
+                                                <Button className="w-full" asChild>
+                                                    <Link to="/login">Sign in</Link>
+                                                </Button>
+                                                <Button variant="outline" className="w-full" asChild>
+                                                    <Link to="/register">Sign up</Link>
                                                 </Button>
                                             </div>
                                         )}
