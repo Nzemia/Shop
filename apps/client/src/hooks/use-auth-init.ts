@@ -2,10 +2,14 @@ import { useEffect } from 'react'
 import { useAuthStore } from '@/lib/auth-store'
 
 export function useAuthInit() {
-    const { verifyAuth } = useAuthStore()
+    const { verifyAuth, isAuthenticated } = useAuthStore()
 
     useEffect(() => {
-        // Initialize auth state when the app starts
-        verifyAuth()
-    }, [verifyAuth])
+        if (!isAuthenticated) {
+            const token = localStorage.getItem('auth-token')
+            if (token) {
+                verifyAuth()
+            }
+        }
+    }, [verifyAuth, isAuthenticated])
 }

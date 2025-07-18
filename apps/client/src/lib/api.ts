@@ -53,6 +53,13 @@ export const authAPI = {
     getProfile: () =>
         api.get('/auth/profile'),
 
+    updateProfile: (data: {
+        username?: string;
+        currentPassword?: string;
+        newPassword?: string
+    }) =>
+        api.put('/auth/profile', data),
+
     forgotPassword: (data: { email: string }) =>
         api.post('/auth/forgot-password', data),
 

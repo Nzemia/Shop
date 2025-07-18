@@ -22,15 +22,10 @@ export function Header() {
     const [searchQuery, setSearchQuery] = useState("")
     const navigate = useNavigate()
 
-    const { user, isAuthenticated, logout, verifyAuth } = useAuthStore()
+    const { user, isAuthenticated, logout } = useAuthStore()
 
     // Mock data - replace with actual cart state management
     const cartItemsCount = 3
-
-    useEffect(() => {
-        // Verify auth on component mount
-        verifyAuth()
-    }, [verifyAuth])
 
     const handleLogout = () => {
         logout()
@@ -141,9 +136,11 @@ export function Header() {
                                         </div>
                                     </div>
                                     <DropdownMenuSeparator />
-                                    <DropdownMenuItem>
-                                        <User className="mr-2 h-4 w-4" />
-                                        <span>Profile</span>
+                                    <DropdownMenuItem asChild>
+                                        <Link to="/profile">
+                                            <User className="mr-2 h-4 w-4" />
+                                            <span>Profile</span>
+                                        </Link>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem>
                                         <ShoppingCart className="mr-2 h-4 w-4" />
@@ -210,9 +207,11 @@ export function Header() {
                                                     <p className="font-medium">Hello, {user?.username}!</p>
                                                     <p className="text-muted-foreground truncate">{user?.email}</p>
                                                 </div>
-                                                <Button variant="ghost" className="w-full justify-start">
-                                                    <User className="mr-2 h-4 w-4" />
-                                                    Profile
+                                                <Button variant="ghost" className="w-full justify-start" asChild>
+                                                    <Link to="/profile">
+                                                        <User className="mr-2 h-4 w-4" />
+                                                        Profile
+                                                    </Link>
                                                 </Button>
                                                 <Button variant="ghost" className="w-full justify-start">
                                                     <ShoppingCart className="mr-2 h-4 w-4" />

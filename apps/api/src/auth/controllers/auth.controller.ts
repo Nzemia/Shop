@@ -267,3 +267,74 @@ export const verifyToken = async (
     res.status(401).json({ message: "Invalid token" });
   }
 };
+
+// Update user profile
+export const updateProfile = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const userId = (req as any).user.id;
+    const { username, currentPassword, newPassword } = req.body;
+
+    // Get current user data
+    const currentUser = await prisma.user.findUnique({
+      where: { id: userId }
+    });
+
+    if (!currentUser) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+
+    // Check if username is being changed and if it's already taken
+    if (username && username !== currentUser.username) {
+      const existingUser = await prisma.user.findUnique({
+        where: { username }
+      });
+      if (existingUser) {
+        res.status(400).json({ message: "Username already in use" });
+        return;
+      }
+    }
+
+    // If password is being changed, verify current password
+    let hashedNewPassword;
+    if (newPassword && currentPassword) {
+      const isCurrentPasswordValid = await bcrypt.compare(
+        currentPassword,
+        currentUser.password
+      );
+      if (!isCurrentPasswordValid) {
+        res.status(400).json({ message: "Current password is incorrect" });
+        return;
+      }
+      hashedNewPassword = await bcrypt.hash(newPassword, 10);
+    }
+
+    // Update user data (email is not allowed to be updated for security reasons)
+    const updateData: any = {};
+    if (username) updateData.username = username;
+    if (hashedNewPassword) updateData.password = hashedNewPassword;
+
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: updateData,
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        role: true,
+        updatedAt: true
+      }
+    });
+
+    res.status(200).json({
+      message: "Profile updated successfully",
+      user: updatedUser
+    });
+  } catch (error) {
+    console.error("Profile update error:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};

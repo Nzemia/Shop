@@ -12,9 +12,14 @@ export function ProtectedRoute({ children, requireAuth = true }: ProtectedRouteP
     const location = useLocation()
 
     useEffect(() => {
-        // Verify auth on mount
-        verifyAuth()
-    }, [verifyAuth])
+        // Only verify auth if we don't have a token or user
+        const token = localStorage.getItem('auth-token')
+        if (!token && requireAuth) {
+            verifyAuth()
+        } else if (token && !isAuthenticated) {
+            verifyAuth()
+        }
+    }, [verifyAuth, isAuthenticated, requireAuth])
 
     if (isLoading) {
         return (

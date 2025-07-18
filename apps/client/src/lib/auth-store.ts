@@ -22,6 +22,7 @@ interface AuthActions {
     register: (email: string, username: string, password: string) => Promise<void>
     logout: () => void
     verifyAuth: () => Promise<void>
+    updateProfile: (data: { username?: string; currentPassword?: string; newPassword?: string }) => Promise<void>
     clearError: () => void
     setLoading: (loading: boolean) => void
 }
@@ -127,6 +128,28 @@ export const useAuthStore = create<AuthState & AuthActions>()(
                         isLoading: false,
                         error: null,
                     })
+                }
+            },
+
+            updateProfile: async (data: { username?: string; currentPassword?: string; newPassword?: string }) => {
+                try {
+                    set({ isLoading: true, error: null })
+
+                    const response = await authAPI.updateProfile(data)
+                    const { user } = response.data
+
+                    set({
+                        user,
+                        isLoading: false,
+                        error: null,
+                    })
+                } catch (error: any) {
+                    const errorMessage = error.response?.data?.message || 'Profile update failed'
+                    set({
+                        error: errorMessage,
+                        isLoading: false,
+                    })
+                    throw new Error(errorMessage)
                 }
             },
 

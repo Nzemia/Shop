@@ -6,14 +6,16 @@ import {
   registerUser,
   resetPassword,
   verifyAuth,
-  verifyToken
+  verifyToken,
+  updateProfile
 } from "../../auth/controllers/auth.controller";
 
 import {
   forgotPasswordSchema,
   loginSchema,
   registerSchema,
-  resetPasswordSchema
+  resetPasswordSchema,
+  updateProfileSchema
 } from "../validators/auth.validator";
 
 import validate from "../../auth/middleware/auth.middleware";
@@ -29,9 +31,11 @@ router.post("/reset-password", validate(resetPasswordSchema), resetPassword);
 // Protected routes
 router.get("/verify", verifyAuth);
 
-// TODO:: protected route using middleware
+// Profile routes
 router.get("/profile", verifyToken, (req, res) => {
   res.json({ user: (req as any).user });
 });
+
+router.put("/profile", verifyToken, validate(updateProfileSchema), updateProfile);
 
 export default router;
