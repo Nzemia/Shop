@@ -148,7 +148,7 @@ function SidebarContent({
     <>
       {/* Desktop Content */}
       <div className="md:block hidden">
-        <h1 className="text-xl font-bold text-foreground mb-6">Jenga Admin</h1>
+        <h1 className="text-xl font-bold text-foreground mb-6">JengaShop</h1>
         <nav className="flex flex-col gap-2">
           {links.map(({ name, path, icon: Icon }) => (
             <Link
