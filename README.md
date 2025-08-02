@@ -27,11 +27,10 @@ pnpm start
 
 ## Environment Setup
 
-Copy `.env.example` files in each app directory and configure your environment variables:
+Copy `.env.example` files in api directory and configure your environment variables:
 
-- `apps/api/.env` - Database URL, JWT secrets, email config, Cloudinary
-- `apps/dashboard/.env` - API endpoints
-- `packages/database/.env` - Database connection
+- `apps/api/.env` 
+- `packages/database/.env` 
 
 ## Development
 
@@ -48,3 +47,4 @@ Each app runs on a different port:
 - **File Storage**: Cloudinary
 - **Monorepo**: Turborepo, pnpm workspaces
 
+## Dashboard
