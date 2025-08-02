@@ -48,3 +48,7 @@ Each app runs on a different port:
 - **Monorepo**: Turborepo, pnpm workspaces
 
 ## Dashboard
+![alt text](dashboard.png)
+
+## Client
+![alt text](client.png)
