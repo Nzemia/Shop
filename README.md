@@ -43,7 +43,6 @@ Each app runs on a different port:
 - **Frontend**: React 19, TypeScript, Tailwind CSS, Vite
 - **Backend**: Express.js, TypeScript, Prisma
 - **Database**: PostgreSQL
-- **Auth**: JWT, Passport (Google/Facebook OAuth)
 - **File Storage**: Cloudinary
 - **Monorepo**: Turborepo, pnpm workspaces
 
