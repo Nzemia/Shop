@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { Menu, Search, ShoppingCart, User, LogOut } from "lucide-react"
 import { toast } from "sonner"

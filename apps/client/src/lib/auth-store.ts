@@ -73,6 +73,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
                     set({ isLoading: true, error: null })
 
                     const response = await authAPI.register({ email, username, password })
+                    
 
                     // After successful registration, automatically log in
                     await get().login(email, password)

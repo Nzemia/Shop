@@ -36,7 +36,6 @@ export const orderStatusSchema = z.object({
   trackingStatus: z.enum(["PENDING", "CONFIRMED", "SHIPPED", "DELIVERED"]).optional(),
   paymentStatus: z.enum(["PENDING", "COMPLETED", "FAILED", "REFUNDED"]).optional()
 }).refine((data) => {
-  // At least one status field must be provided
   return data.status || data.trackingStatus || data.paymentStatus;
 }, {
   message: "At least one status field must be provided"

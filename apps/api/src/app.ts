@@ -7,7 +7,6 @@ import adminRoutes from "./admin/routes/admin.routes";
 import productRoutes from "./products/routes/products.routes";
 import orderRoutes from "./orders/routes/orders.routes";
 import paymentRoutes from "./payments/routes/payments.routes";
-import paymentModuleRoutes from "./modules/payments/payment.routes";
 import supportRoutes from "./support/routes/support.routes";
 import uploadRoutes from "./uploads/routes";
 
@@ -27,7 +26,6 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/payments", paymentRoutes);
-app.use("/api/payments/mpesa", paymentModuleRoutes);
 app.use("/api/support", supportRoutes);
 app.use("/api/uploads", uploadRoutes);
 

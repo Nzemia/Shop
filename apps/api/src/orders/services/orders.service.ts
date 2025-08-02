@@ -72,7 +72,6 @@ export const createOrder = async (data: CreateOrderData, userId: string) => {
       });
     } catch (error) {
       console.error("M-Pesa STK Push failed:", error);
-      // Don't fail the order creation, just log the error
     }
   }
 

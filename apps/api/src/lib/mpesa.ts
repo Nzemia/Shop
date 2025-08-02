@@ -14,6 +14,8 @@ const BASE_URL =
     ? "https://api.safaricom.co.ke"
     : "https://sandbox.safaricom.co.ke";
 
+// TODO:: Implemenent this
+
 export const getAccessToken = async () => {
   try {
     const res = await axios.get(
@@ -48,7 +50,6 @@ export const stkPush = async ({
       `${MPESA_SHORTCODE}${MPESA_PASSKEY}${timestamp}`
     ).toString("base64");
 
-    // Format phone number to international format
     const formattedPhone = formatPhoneNumber(phone);
 
     const res = await axios.post(
@@ -58,7 +59,7 @@ export const stkPush = async ({
         Password: password,
         Timestamp: timestamp,
         TransactionType: "CustomerPayBillOnline",
-        Amount: Math.round(amount), // Ensure amount is integer
+        Amount: Math.round(amount), 
         PartyA: formattedPhone,
         PartyB: MPESA_SHORTCODE,
         PhoneNumber: formattedPhone,

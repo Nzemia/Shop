@@ -47,3 +47,4 @@ Each app runs on a different port:
 - **Auth**: JWT, Passport (Google/Facebook OAuth)
 - **File Storage**: Cloudinary
 - **Monorepo**: Turborepo, pnpm workspaces
+

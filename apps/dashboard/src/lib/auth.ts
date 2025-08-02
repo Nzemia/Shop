@@ -139,7 +139,7 @@ export const useAuth = () => {
   const isSuperAdmin = store.user?.role === 'SUPERADMIN';
   const isAdmin = store.user?.role === 'ADMIN' || isSuperAdmin;
   const canManageUsers = isAdmin;
-  const canPromoteUsers = isSuperAdmin; // Only SUPERADMIN can change roles
+  const canPromoteUsers = isSuperAdmin; 
 
   return {
     ...store,
@@ -150,7 +150,7 @@ export const useAuth = () => {
   };
 };
 
-// Utility functions for API calls and uploadthing
+// Utility functions for API calls
 export const getAuthToken = (): string | null => {
   const state = useAuthStore.getState();
   return state.token || localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
@@ -165,10 +165,7 @@ export const isAuthenticated = (): boolean => {
   return !!getAuthToken();
 };
 
-// For uploadthing, we need to pass headers through the request
-export const getUploadthingHeaders = () => {
-  return getAuthHeaders();
-};
+
 
 // Export logout function for components that need it directly
 export const logout = () => {
