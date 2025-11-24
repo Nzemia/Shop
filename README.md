@@ -1,4 +1,4 @@
-# JengaShop
+# Shop
 
 A modern e-commerce platform built with a monorepo architecture using Turborepo, featuring a React client, admin dashboard, and Express API.
 
@@ -26,8 +26,6 @@ pnpm start
 ```
 
 ## Environment Setup
-
-Copy `.env.example` files in api directory and configure your environment variables:
 
 - `apps/api/.env` 
 - `packages/database/.env` 
